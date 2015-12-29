@@ -1,0 +1,656 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<script type="text/javascript">
+
+ var _gaq = _gaq || [];
+ _gaq.push(['_setAccount', 'UA-1574903-1']);
+ _gaq.push(['_trackPageview']);
+
+ (function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+ })();
+
+</script>
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+
+<title>Advanced Search</title>
+
+<meta name="Keywords" content="art, art sales index, art prices, art sales, art auctions,auction results, christie's, sotheby's, christies, sothebys, auction house,art auction, sold, painting, sculpture, artwork, artworks, photograph, workon paper, print, prints, fine art, fine arts, auction lot" />
+<meta name="Description" content="ARTINFO Art Sales Index allows you to search 3.5 million art auction results and records." />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<!-- <link rel="stylesheet" href="/asi/styles/autocomplete.css" type="text/css" media="screen, print" /> -->
+<link rel="stylesheet" href="/asi/styles/styles.css" type="text/css" media="screen, print" />
+
+<script type="text/javascript" src="/asi/scripts/dialog.js"></script>
+<script type="text/javascript" src="/asi/scripts/library/ad-server.js"></script>
+<script type="text/javascript" src="/asi/scripts/date-picker.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+ 	google.load("prototype", "1.6");
+  	google.load("scriptaculous", "1.8.1");
+</script>
+<script type="text/javascript" src="/asi/scripts/search-artist.js"></script>
+<script type="text/javascript" src="/asi/scripts/library/jquery-1.4.min.js"></script>
+<script type="text/javascript" src="/asi/scripts/library/hoverIntent.js"></script>
+
+<script type="text/javascript" src="/asi/scripts/jquery.fancybox-1.3.4/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+<script type="text/javascript" src="/asi/scripts/jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<link rel="stylesheet" type="text/css" href="/asi/scripts/jquery.fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+
+
+
+<script>
+	var $j = jQuery.noConflict();
+
+	$j(document).ready(function() {
+
+			$j("#loginLightbox").fancybox({
+				'scrolling'		: 'no',
+				'titleShow'		: false,
+				'onClosed'		: function() {
+	    	$j("#login-error").hide();
+			}
+			});
+			$j("#japtcha").val("");
+		});
+
+	// captcha code
+	function validate() {
+		var date = new Date();
+		$j.ajax({
+			type : "POST",
+			url : window.location.protocol+"//"+window.location.host+"/asi/verifyCaptcha",
+			data : {
+				"jcaptcha" : $j("#japtcha").val(), "time": date.getMilliseconds()
+			},
+			datatype : "text",
+			timeout : 10000,
+			success : function(data) {
+				var str = data+"";
+				window.location = str;
+//				alert(str.trim()=="true");
+//				if(str.trim()=="true") {
+//					window.location = "http://localhost:8080/asi/search/artistsAtoZ.ai";
+//				} else {
+//					refreshPage();
+//				}
+//				return true;
+			},
+			error : function() {
+				refreshPage();
+			}
+		});
+	}
+
+	function refreshPage()  {
+		 window.location.reload();
+	}
+
+</script>
+
+
+
+<style>
+
+.btnCaptcha{color:#000 !important; background:#ccc; width:100px !important; margin-top:10px !important; height:26px !important; float:left; border:1px solid #999 !important; background: -moz-linear-gradient(center top , #FFFFFF 0%, #DDDDDD 100%) repeat scroll 0 0 transparent;
+border-color: #DDDDDD #BBBBBB #999999;
+border-image: none;
+border-radius: 4px 4px 4px 4px;
+border-style: solid;
+border-width: 1px;
+
+cursor: pointer;
+font: normal 12px/1.3 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,sans-serif;
+outline: 0 none;
+overflow: visible;
+
+text-shadow: 0 1px 1px #FFFFFF;
+}
+</style>
+
+</head>
+
+<body id="bodyLOT">
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+ <link href='http://fonts.googleapis.com/css?family=Droid+Sans|Droid+Serif|Yanone+Kaffeesatz:400,300' rel='stylesheet' type='text/css'/>
+<link href='http://fonts.googleapis.com/css?family=Cutive|Open+Sans:300,600|Oswald|Cabin|Cabin+Condensed' rel='stylesheet' type='text/css'/>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,300,300italic,700italic' rel='stylesheet' type='text/css'/>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700' rel='stylesheet' type='text/css'/>
+
+
+<link rel="stylesheet" type="text/css" href="/asi/styles/fonts/Yanone-Kaffeesatz/stylesheet.css" />
+<link rel="stylesheet" type="text/css" href="/asi/styles/fonts/Droid-Sans/stylesheet.css" />
+
+<link rel="stylesheet" type="text/css" href="/asi/styles/print.css" media="print" />
+<link type="text/plain" rel="author" href="/asi/styles/humans.txt" />
+
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+
+<script type="text/javascript">
+function findRedirection() {
+    var qrStr = window.location.search;
+    var spQrStr = qrStr.substring(1);
+    var arrQrStr = new Array();
+    var arr = spQrStr.split('&');
+    var queryvalue = arr[0].split('=');
+if(!queryvalue[1] || queryvalue[1].length===0 || queryvalue[1]==1) {
+} else {
+	document.getElementById('ref1').value = 'http://'+queryvalue[1];
+}
+}
+</script>
+
+ <!-- CLEAR DEFAULT VALUE -->
+<script>
+function clearPassword(field){
+	if (field.defaultValue == field.value) field.type = 'password';
+	else if (field.value == '') field.type = 'text';
+	clearText(field);
+}
+
+function clearText(field){
+	if (field.defaultValue == field.value) field.value = '';
+	else if (field.value == '') field.value = field.defaultValue;
+}
+</script>
+
+<script type='text/javascript' src='http://partner.googleadservices.com/gampad/google_service.js'></script>
+<script type='text/javascript'>
+GS_googleAddAdSenseService("ca-pub-9692224465914577");
+GS_googleEnableAllServices();
+
+</script>
+<script type='text/javascript'>
+GA_googleAddSlot("ca-pub-9692224465914577", "Basi_970x90");
+GA_googleAddSlot("ca-pub-9692224465914577", "BASI_artists");
+GA_googleAddSlot("ca-pub-9692224465914577", "BASI_flex300x600");
+GA_googleAddSlot("ca-pub-9692224465914577", "300x250_Basi_LP");
+GA_googleAddSlot("ca-pub-9692224465914577", "300x250_Basi_LP_2");
+GA_googleAddSlot("ca-pub-9692224465914577", "BASI_medRectangle");
+</script>
+<script type='text/javascript'>
+GA_googleAddAttr('channel', 'BASI Advanced Search');
+
+
+</script>
+<script type='text/javascript'>
+GA_googleFetchAds();
+</script>
+
+
+
+
+<div id="header" >
+	<div class="ads-wrapper">
+		<div id="ads-leaderboard-upper">
+			<div class="center-leaderboard">
+                            <script type='text/javascript'>
+                            GA_googleFillSlot("Basi_970x90");
+                            </script>
+			</div>
+		</div>
+	</div>
+
+		<div id="nav-global">
+			<div class="global-navwrap">
+			<ul class="global-nav">
+				<li><a href="/asi/security/landing-page.ai" style="padding-left:0;" ><img alt="" src="/asi/images/top-logo.jpg" alt="Blouin Art Sales Index" ></a></li>
+				<li style="margin-top:3px;"><a href="/asi/search/artistsAtoZ.ai"  style="line-height: 26px;"> <img alt=""  src="/asi/images/icon-lot-search.png"> &nbsp; LOT SEARCH</a></li>
+				<li style="margin-top:3px;"><a href="/asi/search/artistLanding.ai"  style="line-height: 26px;"> <img alt=""  src="/asi/images/icon-artist.png"> &nbsp; ARTIST INDEX</a></li>
+				
+			</ul>
+
+
+<!-- ----------------- LOG IN SNIPPET ----------------- -->
+<!--LOGIN FORM LIGHTBOX -->
+<div style="display:none">
+
+	<div id="login-form">
+	<p class="logIn">Log In</p>
+		<div id="login-header">
+		
+		<form id="loginLightboxForm" name="loginLightboxForm" method="post" action="/asi/j_spring_security_check" onsubmit="findRedirection();">
+			<input id="lightboxusername" type="text" name="j_username" value="Username" onFocus="clearText(this)" onBlur="clearText(this)" tabindex="2" />
+			<input id="lightboxpassword" type="text" name="j_password" value="Password" onFocus="clearPassword(this)" onBlur="clearPassword(this)" tabindex="3" />
+			<input type="hidden" name ="username" id ="ref1" >
+			<div class="loginbuttons">
+				
+				<input type="image" height="28"  style="width:298px; height:35px; border:0; margin:0; padding:0;" src="/asi/images/login-btn.jpg">
+			</div>
+			<p><a href="/asi/security/forgotPassword.ai" style="float:right;">Forgot Password?</a><input type="checkbox" name="_spring_security_remember_me" style="margin:-2px 6px 0 0; vertical-align:middle; padding:0; width:12px; height:12px;" />Remember Me
+				</p>
+		</form>
+		<div class=account><p>Don't have an account?</p><a href="/asi/shoppingCart/registration.ai" class="signup">Sign Up</a></div>
+		</div>
+	</div>
+</div>
+
+<!-- ----------------- USER NOT LOGGED IN ----------------- -->
+
+
+			<ul class="global-nav-r" style="padding-top:6px;">
+				
+				<li><a id="loginLightbox" href="#login-form" style="padding-right:0;" >Sign In</a></li>
+			</ul>
+
+
+
+
+
+<!-- ----------------- USER  LOGGED IN ----------------- -->
+<!-- ----------------- USER  LOGGED IN COMBINED NAV ----------------- -->
+<div id ="header-lot-account">
+
+</div>
+<!-- ----------------- LOG IN SNIPPET ----------------- -->
+
+
+
+			</div>
+		</div><!-- #nav-global -->
+		
+
+	
+</div><!-- #header -->
+
+<div class="clear"></div>
+
+
+<div id="pagecontent">
+
+<div id="search-container">
+
+<!--div class="help"><a href="http://www.artinfo.com/asihelp/">Help</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#" onclick="feedback_widget.show();">Feedback</a></div-->
+
+<h1>Advanced Search <!-- img src="/asi/images/magnify-icon.png" width="25" height="23" alt="" / --></h1>
+
+<div class="instructions">
+	To begin searching for lots from multiple artists, first type in the artist&rsquo;s name then click &ldquo;Find Artist.&rdquo;  Then select the artist&rsquo;s
+	name from the list and click &ldquo;Add&rdquo; to begin your search.</div>
+
+<form id = "search_form" name="search_form" action="/asi/search.action" theme="simple" onsubmit="submitForm(); return false;">
+<input type="hidden" name="search.artistFirstName" id="afn" value=""/>
+<input type="hidden" name="search.artistLastName" id="aln" value=""/>
+<input type="hidden" name="search.count" id="scount" value=""/>
+<input type="hidden" name="search.artworkTitleFullScan" id="full-scan" value="true"/>
+<input type="hidden" name="doSearch" id="dosearch" value="true"/>
+
+
+<div class="section">
+<div class="col1">Artist Information</div>
+		<div class="left">
+	<div class="col2">
+	<span class="col2-sub">Last Name</span><br />
+	<input type="text" id="a_typing1" name="a_typing1" size="22" />
+		and/or &nbsp; &nbsp;
+		</div>
+		<div class="left">
+	<span class="col2-sub">First Name</span><br />
+	<input type="text" id="a_typing2" name="a_typing2" size="22" />
+		</div>
+
+
+    <div class="right">
+    <br />
+	    <a href="#" id="find-artists-link" onclick="return false;">
+	    <img src="/asi/images/button-find-artist.png" alt="Find Artists" width="83" height="24" border="0" style="vertical-align: middle;" /></a>
+		<img id="artist-loading" style="display:none;" src="images/loading-small.gif" width="13">
+	</div>
+
+	<div class="clear"></div>
+<!-- Choose/Add Artist -->
+<div id="choose_container">
+
+<div class="col1-sub">Choose Artist from List <!-- img src="/asi/images/arrow-select-artist.png" alt="" width="11" height="7" / --></div>
+
+<div id="choose_select" class="clear">
+<select class="choose-artist" name="">
+</select>
+<div id="choose_select_button">
+<a href="#"><img src="/asi/images/add.png" alt="Add" border="0" style="padding-bottom:3px; padding-left: 15px;" /></a>
+</div>
+
+</div>
+</div>
+<!--  End Choose/Add Artist -->
+
+
+<!--  Selected Artists List -->
+<div id="artist_list_container" class="clear" style="display: none;">
+
+<div class="col1">&nbsp;</div>
+
+<input type="hidden" id="artist-list-ids" name="search.artistAdditionalIds" value="">
+
+<div id="artist-list">
+</div>
+
+<div class="search-buttons">
+<img id="loading-indicator" style="padding-left: 200px; display: none;" border="0"	src="images/loading.gif"></div>
+
+<span id="controls-1">
+<a id="b_cleart" href="clear-search.action"><img src="/asi/images/button-reset-fields.png" width="111" height="28" border="0"  /></a>&nbsp;&nbsp;&nbsp;
+<a id="b_resultst" href="javascript:submitForm()"><img src="/asi/images/button-search-adv.png" width="83" height="28" border="0" alt="See Results Details" /></a>
+</span>
+</div>
+
+
+
+<!-- End Selected Artists List -->
+	</div>
+</div>
+	<div class="clear"></div>
+	<br />	<input type="checkbox" id="ex-qualifiers" value="true" name="search.artistExcludeQualifiers"/><span style="font-size:11.5px;">Exclude qualifiers (e.g. attributed to, school of)</span>
+
+<!-- #ARTISTS BLOCK -->
+
+
+<div class="divider-light">
+</div>
+
+<!-- MEDIUM BLOCK -->
+<div class="section clear">
+<div class="col1">Artwork Information</div>
+<div class="col1-sub clear">Medium</div>
+	<div class="col2">
+	<input type="checkbox" name="mPaintings" id="a_categoryid1" value="true">Paintings
+	&nbsp;&nbsp;&nbsp;<input type="checkbox" name="mWop" id="a_categoryid2" value="true">Works on Paper
+	&nbsp;&nbsp;&nbsp;<input type="checkbox" name="mPrints" id="a_categoryid3" value="true">Prints
+	&nbsp;&nbsp;&nbsp;<input type="checkbox" name="mPhotographs" id="a_categoryid4" value="true">Photographs
+	&nbsp;&nbsp;&nbsp;<input type="checkbox" name="mSculptures" id="a_categoryid5" value="true">Sculpture
+	&nbsp;&nbsp;&nbsp;<input type="checkbox" name="mMini" id="a_categoryid6" value="true">Miniatures
+	</div>
+</div>
+<!-- MEDIUM -->
+
+<!-- ARTWORK BLOCK -->
+<div class="section-artwork">
+	<div class="col1-sub">Artwork Title</div>
+	<div class="col2"><input type="text" name="search.artworkTitle" id="a_title" size="30" maxlength="100" value=""></div>
+	<div class="col4-sub right">Year of Work &nbsp; &nbsp;
+		<input type="text" name="search.artworkYearOfWorkStart" id="date_of_work_1" size="4" maxlength="4" value="" onblur="isValidNumber(this.id)">to&nbsp;&nbsp;<input type="text" name="search.artworkYearOfWorkEnd" id="date_of_work_2" size="4" maxlength="4" value="" onblur="isValidNumber(this.id)" />
+	</div>
+</div>
+
+<div class="section-dimensions clear">
+	<div class="col1-sub">Dimensions</div>
+	<div class="col2 dim">
+	<span class="field-desc">Height</span>&nbsp;
+	<input type="text" name="search.artworkHeightStart" id="height_1" size="4" maxlength="4" value="" onblur="isValidNumber(this.id)" />
+	to&nbsp;&nbsp;
+	<input type="text" name="search.artworkHeightEnd" id="height_2" size="4" maxlength="4" value="" onblur="isValidNumber(this.id)" />
+	</div>
+    <div class="col3 dim"><span class="field-desc">Width&nbsp;</span>
+	<input type="text" name="search.artworkWidthStart" id="width_1" size="4" maxlength="4" value="" onblur="isValidNumber(this.id)" />
+	to&nbsp;&nbsp;
+	<input type="text" name="search.artworkWidthEnd" id="width_2" size="4" maxlength="4" value="" onblur="isValidNumber(this.id)" />
+	</div>
+    <div class="col4"><span class="field-desc">Depth&nbsp;</span>
+	<input type="text" name="search.artworkDepthStart" id="depth_1" size="4" maxlength="4" value="" onblur="isValidNumber(this.id)" />
+	to&nbsp;&nbsp;
+	<input type="text" name="search.artworkDepthEnd" id="depth_2" size="4" maxlength="4" value="" onblur="isValidNumber(this.id)" />
+	&nbsp;&nbsp;
+	<select name="search.artworkDimension" id="a_dunit" size="1">
+	<option value="in" selected="selected">inches</option>
+	<option value="cm">centimeters</option>
+	<option value="mm">millimeters</option>
+	</select>
+	</div>
+</div>
+<!-- #ARTWORK BLOCK -->
+
+<div class="divider-light">
+</div>
+
+<!-- SALE INFORMATION BLOCK -->
+<div class="section-sale-info clear">
+	<div class="col1">Sale Information</div>
+	<div class="col2">
+		<div class="col1-sub">Auction House </div>
+		<input type="text" id="autocomplete2" name="search.auctionHouseName" size="30" value="" />
+		<input type="hidden" name="search.auctionHouseId" id="auctionHouseId" value="">
+		<div id="autocomplete_choices2" class="autocomplete"></div>
+	</div>
+    <div class="col3-sub right">
+    	<div class="col1-sub">&nbsp;</div>
+    	<span class="field-desc">Lot #</span>
+    	&nbsp;&nbsp;<input type="text" id="a_catindex" name="search.lotCatalogNum" size="8" value="">
+    </div>
+</div>
+
+<div class="section-sale-date clear">
+	<div class="col1-sub">Sale Date </div>
+	<div class="col2">
+		<input type="text" name="search.auctionSaleDateStart" id="auctionSaleDateStart" value="" size="12" maxlength="10" >
+		<a href="javascript:show_calendar('auctionSaleDateStart');">
+			<img src="images/calendar-icon.png" border="0" style="vertical-align:middle;">
+		</a>
+		&nbsp;&nbsp;&nbsp;to&nbsp;&nbsp;&nbsp;
+		<input type="text" name="search.auctionSaleDateEnd" id="auctionSaleDateEnd" value="" size="12" maxlength="10">
+		<a href="javascript:show_calendar('auctionSaleDateEnd');">
+			<img src="images/calendar-icon.png" border="0" style="vertical-align:middle;">
+		</a>
+	</div>
+
+	<div class="col3-sub right">
+		<span class="field-desc">Sale Code</span>&nbsp;&nbsp;
+		<input type="text" id="a_catcode" name="search.auctionCode" size="8" value="" />
+	</div>
+
+    <!--label for="from"></label>
+		<input type="text" id="from" name="auctionSaleDateStart"/>
+		<label for="to">to</label>
+		<input type="text" id="to" name="auctionSaleDateEnd"/-->
+
+
+    </div>
+<!-- #SALE INFORMATION BLOCK -->
+
+<!-- PRICE RANGE BLOCK -->
+<div class="section-sale-date clear">
+	<div class="col1-sub">Price Range
+		<span class="col1-instuctions">(no commas)</span>
+    </div>
+
+	<div class="col2">
+		<input type="text" name="search.lotPriceLow" id="price_1" size="12" maxlength="11" value="" onblur="isValidNumber(this.id)">
+		to&nbsp;&nbsp;
+		<input type="text" name="search.lotPriceHigh" id="price_2" size="12" maxlength="11" value="" onblur="isValidNumber(this.id)">
+	</div>
+	<div class="col3">
+		<select name="search.lotCurrency" size="1" id="a_currency">
+			<option value=""></option>
+			<option value="EUR">EUR</option>
+			<option value="GBP">GBP</option>
+			<option value="USD" selected="selected">USD</option>
+		</select>
+	</div>
+	<div class="col4">
+		&nbsp;&nbsp; <input type="checkbox" id="a_exunsold" name="search.lotExcludeUnsold" value="true">Exclude unsold artworks
+	</div>
+</div>
+<!-- #PRICE RANGE BLOCK -->
+
+<div class="divider-light">
+</div>
+
+<!-- BUTTONS BOTTOM BLOCK -->
+<div class="search-buttons search-buttons-bottom">
+<div id="controls-2">
+    <a id="b_clearb" href="clear-search.action"><img src="/asi/images/button-reset-fields.png" width="111" height="28" border="0"  /></a>&nbsp;&nbsp;&nbsp;
+    <a id="b_resultsb" href="javascript:submitForm()"><img src="/asi/images/button-search-adv.png" width="83" height="28" border="0" alt="See Results Details" /></a>
+</div>
+</div>
+</form>
+</div>
+
+
+
+
+<div id="sidebar">
+	<p class="ads">ADVERTISEMENTS</p>
+  
+	<div class="ads-sidebar">
+            <script type='text/javascript'>
+            GA_googleFillSlot("BASI_flex300x600");
+            </script>
+        </div>
+
+        
+	<div class="ads-sidebar">
+            <script type='text/javascript'>
+            GA_googleFillSlot("300x250_Basi_LP");
+            </script>
+        </div>
+
+
+
+
+	<!-- Begin MailChimp Signup Form -->
+	<div id="mc_embed_signup">
+		<div class="mc-field-group"></div>
+		<div id="mce-responses" class="clear">
+			<div class="response" id="mce-error-response" style="display:none"></div>
+			<div class="response" id="mce-success-response" style="display:none"></div>
+		</div>
+	</div>
+	<!-- <div id="newsletter-callout">
+		<form action="http://artinfo.us1.list-manage.com/subscribe/post" method="POST" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+			<input type="hidden" name="u" value="a4d8aedc04f0d2309b7aeb6b5" />
+			<input type="hidden" name="id" value="df23dbd3c6" />
+			<input type="hidden" id="group_512" name="group[1][512]" value="1" checked="checked" />
+			<div class="newsletter-wrap">
+				<h2><span class="red">MARKET WATCH </span>NEWSLETTER</h2>
+				<p>
+					Sign Up to Receive the Latest Market News and Reports
+				</p>
+				<div class="mailchimpsignupwrap left">
+					<input type="email" value="" placeholder="Enter your email address" name="EMAIL" class="required email" id="mce-EMAIL">
+				</div>
+				<div class="mailchimpbutton left">
+					<input type="image" src="/asi/images/signup_mc.jpg" name="subscribe" id="mc-embedded-subscribe" type="image">
+				</div>
+				<div class="clear"></div>
+			</div>
+		</form>
+	</div>  -->
+	<!--End mc_embed_signup-->
+
+
+	<div class="ads-sidebar" style="margin-top: 30px; display:none;">
+            <script type='text/javascript'>
+            GA_googleFillSlot("BASI_medRectangle");
+            </script>
+        </div>
+
+</div><!-- #sidebar -->
+</div>
+
+<!------------------- START FOOTER ------------------->
+
+<div id="footer-wrapper">
+<div class="spacer30"></div>
+<div class="newsLetter">
+<div style=" width:1040px; margin:0 auto;">
+
+
+
+
+<div class="marketWatch"><img alt="" src="/asi/images/img-market-watch.jpg" ></div>
+<div class="report"><p class="sign"><span>SIGN UP </span>FOR OUR NEWSLETTER</p><p class="get">Get the Latest Market News and Report</p></div>
+<form action="http://artinfo.us1.list-manage.com/subscribe/post" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+						<input type="hidden" name="u" value="a4d8aedc04f0d2309b7aeb6b5" />
+						<input type="hidden" name="id" value="df23dbd3c6" />
+						<input type="hidden" id="group_512" name="group[1][512]" value="1" checked="checked" />
+
+<div class="emailForm"><input name="EMAIL" class="email" type="email" placeholder="Enter Your email address..."  id="mce-EMAIL" /><input name="subscribe" class="subscribe" type="submit" id="mc-embedded-subscribe" value="SUBSCRIBE" /></div>
+</form>
+
+</div>
+</div>
+<div style="clear:both;"></div>
+
+<div id="footer" class="clearfix">
+
+	<ul>
+		
+		<li><a href="/asi/security/landing-page.ai">Home</a></li>
+		<li><a href="/asi/search/artistsAtoZ.ai" >Lot Search</a></li>
+		<li><a href="/asi/search/artistLanding.ai">Artists Index</a></li>
+		<li><a href="/asi/shoppingCart/registration.ai" >Sign Up</a></li>
+		<li><a href="http://www.hydralab.eu/enews/" >News</a></li>
+		<li><a href="/asi/security/support.ai">Contact Us</a></li>
+		<li><a href="/asi/user_agreement.jsp">Terms</a></li>
+		<li><a href="/asi/privacy_policy.jsp">Privacy</a></li>
+		<li><a href="/asi/top_artist.jsp">Top 100 Artists</a></li>
+		
+	
+	</ul>
+	<p class="footerLogo"><a href="http://www.blouinartinfo.com/">BlouinArtinfo.Com </a> </p>
+	<div class="copyright">
+	Copyright &copy; <script type="text/javascript">document.write(new Date().getFullYear() + "")</script> Louise Blouin Media. </div>
+</div>
+</div>
+
+
+<!------------------- END  FOOTER ------------------->
+
+<script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName("script")[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0013/1112.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+
+<script type="text/javascript">
+var _sf_async_config={uid:7140,domain:"artsalesindex.artinfo.com"};
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (("https:" == document.location.protocol) ? "https://a248.e.akamai.net/chartbeat.download.akamai.com/102508/" : "http://static.chartbeat.com/") +
+       "js/chartbeat.js");
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+</script>
+
+
+
+
+<!--
+<script type="text/javascript" charset="utf-8">var is_ssl = ("https:" == document.location.protocol);var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));</script>
+<script type="text/javascript" charset="utf-8">var feedback_widget_options = {};feedback_widget_options.display = "overlay";feedback_widget_options.company = "artinfo";feedback_widget_options.placement = "hidden";feedback_widget_options.color = "#222";feedback_widget_options.style = "idea";var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);</script>
+-->
+</body>
+</html>
