@@ -6,17 +6,18 @@
 ######################################################################
 
 from bs4 import BeautifulSoup
-import urllib2, re, time
+import urllib2, re, time, unicodedata
+import pdb
 
 BASE_URL = "http://artsalesindex.artinfo.com.ezproxy.princeton.edu/asi/lots/"
 
 # just for Picasso for now
 # ids 5941080 to 6089000
 # painting_ids = [5943686, 5977558, 5960084, 5957888]
-LOWER = 5940000
+LOWER = 5900000
 # LOWER = 5900000
 # UPPER = 5900020
-UPPER = 6010000
+UPPER = 6400000
 painting_ids = xrange(LOWER, UPPER + 1)
 
 # CSV file to have the data
@@ -27,6 +28,9 @@ bad_fileids = open("./blouin_badids_{}_to_{}.csv".format(LOWER, UPPER), 'wb')
 ##########################################################################
 
 num_ids_remaining = UPPER - 1 - LOWER
+num_ids_printed = 1
+num_ids_invalid = 1
+num_picassos = 0
 
 ## For tracking time remaining w/recursively updated average
 ## DO LATER if time
@@ -35,11 +39,12 @@ PREV_TIME = time.time()
 # N = 1
 
 for cx, curr_id in enumerate(painting_ids):
-    if cx > 0 and num_ids_remaining >= 0:
+    if num_ids_remaining >= 0:
         # Information: which painting you're on, how much time remaining (estimate).
         # Multiple average time so far by number of paintings left.
-        print "Painting {}, going from {} to {} ...".format(curr_id, LOWER, UPPER)
+        print "Painting {} (# {} so far), going from {} to {} ...".format(curr_id, curr_id - LOWER, LOWER, UPPER)
         print "    Paintings remaining: {}".format(num_ids_remaining)
+        print "    Printed, invalid so far: {}, {}".format(num_ids_printed, num_ids_invalid)
         CURR_TIME = time.time()
         REMAINING_TIME = num_ids_remaining * (CURR_TIME - PREV_TIME)
         # based only on last interval
@@ -48,7 +53,7 @@ for cx, curr_id in enumerate(painting_ids):
         print "    Estimated h/m/s remaining: %d:%02d:%02d" % (h_remain, m_remain, s_remain)
         PREV_TIME = CURR_TIME
         num_ids_remaining -= 1
-
+    pdb.set_trace()
     try:
         curr_url = "{}{}".format(BASE_URL, curr_id)
         response = urllib2.urlopen(curr_url)
@@ -63,7 +68,11 @@ for cx, curr_id in enumerate(painting_ids):
 
         ### Only if interested in Picasso
         # if "Picasso" not in artist:
-        #     continue
+            # continue
+        if "Picasso" in artist:
+            print "  Found a Picasso!"
+            num_picassos += 1
+            print "  Picassos seen so far: {}".format(num_picassos)
 
         # get artist DOB
         artist_dob = painting_info.find("p", {"id" : "artistDob"}).get_text()
@@ -86,21 +95,21 @@ for cx, curr_id in enumerate(painting_ids):
             "Lot details", "Painting details"]
         data = [artist, artist_dob, title, lot_number, auction_data, prices, lot_details, painting_details]
         formatted_data = []
+        pdb.set_trace()
         for item in data:
             if not item:
                 formatted_data.append("")
                 continue
             if isinstance(item, unicode):
-                new_item = str(item).lstrip().rstrip()
+                new_item = unicodedata.normalize('NFKD', item).encode('ascii', 'ignore').lstrip().rstrip()
             elif isinstance(item, str):
-                new_item = str(item).lstrip().rstrip()
+                new_item = item.lstrip().rstrip()
             elif isinstance(item, list):
                 new_item = []
                 for i in item:
-                    if not isinstance(i, str) or not isinstance(i, unicode):
-                        i = re.sub(r'[^\x00-\x7F]+',' ', i)
-                    i = str(i).lstrip().rstrip().replace("\n", " ")
-                    new_item.append(i)
+                    if isinstance(i, unicode):
+                        i = unicodedata.normalize('NFKD', i).encode('ascii', 'ignore')
+                    new_item.append(i.lstrip().rstrip().replace("\n", " "))
             else:
                 print "\n\nNot a list, string, or unicode! None data accounted for."
                 print item
@@ -127,15 +136,29 @@ for cx, curr_id in enumerate(painting_ids):
         # csv_line = '|||||'.join(csv_data) # separator is |||||
         csv_line = '|||||'.join([item if not isinstance(item, list)
             else ' '.join(item) for item in formatted_data])
+        print "  Printing ..."
         fd.write(csv_line + "\n")
+        print "  Painting {} printed: {} by {}".format(num_ids_printed,
+            formatted_data[2], formatted_data[0])
+        if cx % 10 == 0:
+            fd.flush()
+            print "  FLUSH OUTPUT"
+        num_ids_printed += 1
 
     #### if doesn't work just continue, collecting data is more important.
     except:
-        print "Painting {} had invalid data, writing to file".format(curr_id)
+        print " Painting {} had invalid data, writing to file".format(curr_id)
         bad_fileids.write("{}\n".format(curr_id))
+        print " # paintings invalid so far: {}".format(num_ids_invalid)
+        num_ids_invalid += 1
 
 fd.close()
 bad_fileids.close()
-print "Finished job"
+print "Finished job."
+print "----- SUMMARY -----"
+print "Total number of paintings: {}".format(UPPER - 1 - LOWER)
+print "Number of paintings printed: {}".format(num_ids_printed)
+print "Number of paintings invalid: {}".format(num_ids_invalid)
+print "Number of Picassos: {}".format(num_picassos)
 
 import code; code.interact(local=locals())
