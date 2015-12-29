@@ -5,9 +5,8 @@
 #
 ######################################################################
 
-import os; clear = lambda: os.system("cls")
 from bs4 import BeautifulSoup
-import urllib2, re
+import urllib2, re, time
 
 BASE_URL = "http://artsalesindex.artinfo.com.ezproxy.princeton.edu/asi/lots/"
 
@@ -15,8 +14,8 @@ BASE_URL = "http://artsalesindex.artinfo.com.ezproxy.princeton.edu/asi/lots/"
 # ids 5941080 to 6089000
 # painting_ids = [5943686, 5977558, 5960084, 5957888]
 LOWER = 5900000
-UPPER = 5900010
-# UPPER = 6010000
+# UPPER = 5900020
+UPPER = 6010000
 painting_ids = xrange(LOWER, UPPER + 1)
 
 # CSV file to have the data
@@ -26,8 +25,29 @@ bad_fileids = open("./blouin_badids_{}_to_{}.csv".format(LOWER, UPPER), 'wb')
 
 ##########################################################################
 
-for curr_id in painting_ids:
-    print "Painting {}, going from {} to {} ...".format(curr_id, LOWER, UPPER)
+num_ids_remaining = UPPER - 1 - LOWER
+
+## For tracking time remaining w/recursively updated average
+## DO LATER if time
+PREV_TIME = time.time()
+# MU = time.time() - PREV_TIME # starts around 0
+# N = 1
+
+for cx, curr_id in enumerate(painting_ids):
+    if cx > 0 and num_ids_remaining >= 0:
+        # Information: which painting you're on, how much time remaining (estimate).
+        # Multiple average time so far by number of paintings left.
+        print "Painting {}, going from {} to {} ...".format(curr_id, LOWER, UPPER)
+        print "    Paintings remaining: {}".format(num_ids_remaining)
+        CURR_TIME = time.time()
+        REMAINING_TIME = num_ids_remaining * (CURR_TIME - PREV_TIME)
+        # based only on last interval
+        m_remain, s_remain = divmod(REMAINING_TIME, 60)
+        h_remain, m_remain = divmod(m_remain, 60)
+        print "    Estimated h/m/s remaining: %d:%02d:%02d" % (h_remain, m_remain, s_remain)
+        PREV_TIME = CURR_TIME
+        num_ids_remaining -= 1
+
     try:
         curr_url = "{}{}".format(BASE_URL, curr_id)
         response = urllib2.urlopen(curr_url)
