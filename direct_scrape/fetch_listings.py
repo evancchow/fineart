@@ -13,7 +13,8 @@ BASE_URL = "http://artsalesindex.artinfo.com.ezproxy.princeton.edu/asi/lots/"
 # just for Picasso for now
 # ids 5941080 to 6089000
 # painting_ids = [5943686, 5977558, 5960084, 5957888]
-LOWER = 5900000
+LOWER = 5940000
+# LOWER = 5900000
 # UPPER = 5900020
 UPPER = 6010000
 painting_ids = xrange(LOWER, UPPER + 1)
