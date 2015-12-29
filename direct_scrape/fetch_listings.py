@@ -15,14 +15,14 @@ BASE_URL = "http://artsalesindex.artinfo.com.ezproxy.princeton.edu/asi/lots/"
 # ids 5941080 to 6089000
 # painting_ids = [5943686, 5977558, 5960084, 5957888]
 LOWER = 5900000
-# UPPER = 5900010
-UPPER = 6010000
+UPPER = 5900010
+# UPPER = 6010000
 painting_ids = xrange(LOWER, UPPER + 1)
 
 # CSV file to have the data
-fd = open("./artist_data.csv", 'wb')
+fd = open("./blouin_data_{}_to_{}.csv".format(LOWER, UPPER), 'wb')
 # CSV file to have the bad fileids
-bad_fileids = open("./artist_badids.csv", 'wb')
+bad_fileids = open("./blouin_badids_{}_to_{}.csv".format(LOWER, UPPER), 'wb')
 
 ##########################################################################
 
