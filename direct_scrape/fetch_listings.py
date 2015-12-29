@@ -53,6 +53,7 @@ for cx, curr_id in enumerate(painting_ids):
         response = urllib2.urlopen(curr_url)
         html = response.read()
         if len(html) < 10: # if empty HTML page
+            print("empty html page")
             continue
         bs = BeautifulSoup(html, "lxml")
         painting_info = bs.find("div", {"id" : "lotcontainer"})
@@ -129,8 +130,8 @@ for cx, curr_id in enumerate(painting_ids):
 
     #### if doesn't work just continue, collecting data is more important.
     except:
-        print "Painting {} had invalid data, writing to file"
-        bad_fileids.write(curr_id + "\n")
+        print "Painting {} had invalid data, writing to file".format(curr_id)
+        bad_fileids.write("{}\n".format(curr_id))
 
 fd.close()
 bad_fileids.close()
