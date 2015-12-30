@@ -2,22 +2,28 @@
 #
 # Scrape data from Blouin etc.
 # Remember to use Princeton's VPN!
+# Make sure you connect BEFORE you use your browser. If you try to connect
+# while you are already logged in it won't work.
+# If have problems, right-click VPN then hit "clear saved login info" or 
+# whatever it says.
 #
 ######################################################################
 
 from bs4 import BeautifulSoup
-import urllib2, re, time, unicodedata
+import urllib2, re, time, unicodedata, sys
 import pdb
+
+EXIT_PROGRAM = False
 
 BASE_URL = "http://artsalesindex.artinfo.com.ezproxy.princeton.edu/asi/lots/"
 
 # just for Picasso for now
 # ids 5941080 to 6089000
 # painting_ids = [5943686, 5977558, 5960084, 5957888]
-LOWER = 6088349
+LOWER = 5940000
 # LOWER = 5900000
 # UPPER = 5900020
-UPPER = 6088349
+UPPER = 6088351
 painting_ids = xrange(LOWER, UPPER + 1)
 
 # CSV file to have the data
@@ -59,9 +65,19 @@ for cx, curr_id in enumerate(painting_ids):
         response = urllib2.urlopen(curr_url)
         html = response.read()
         if len(html) < 10: # if empty HTML page
-            print("empty html page")
+            print("        ERROR: empty html page")
             continue
         bs = BeautifulSoup(html, "lxml")
+        """ STOP IF YOU GET LOGGED OUT OF PRINCETON VPN """
+        print "   Page title: {}".format(bs.html.head.title)
+        extracted_title = unicodedata.normalize("NFKD",
+            bs.html.head.title.get_text()).encode("ascii", "ignore")
+        print extracted_title
+        if "Authentication Service" in extracted_title:
+            EXIT_PROGRAM = True
+            print("ENCOUNTERED PU LOGIN at url {}, going from {} to {}".format(curr_url, LOWER, UPPER))
+            raise Exception()
+
         painting_info = bs.find("div", {"id" : "lotcontainer"})
         # get artist
         artist = painting_info.find("input", {"id" : "artistName"})["value"]
@@ -140,13 +156,17 @@ for cx, curr_id in enumerate(painting_ids):
         fd.write(csv_line + "\n")
         print "  Painting {} printed: {} by {}".format(num_ids_printed,
             formatted_data[2], formatted_data[0])
-        if cx % 10 == 0:
+        if cx % 1 == 0:
             fd.flush()
             print "  FLUSH OUTPUT"
         num_ids_printed += 1
 
     #### if doesn't work just continue, collecting data is more important.
     except:
+        if EXIT_PROGRAM == True:
+            print "PROGRAM STOPPED BECAUSE LOGGED OUT OF PRINCETON VPN"
+            import code; code.interact(local=locals())
+
         print " Painting {} had invalid data, writing to file".format(curr_id)
         bad_fileids.write("{}\n".format(curr_id))
         print " # paintings invalid so far: {}".format(num_ids_invalid)
