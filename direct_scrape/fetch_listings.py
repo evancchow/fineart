@@ -14,10 +14,10 @@ BASE_URL = "http://artsalesindex.artinfo.com.ezproxy.princeton.edu/asi/lots/"
 # just for Picasso for now
 # ids 5941080 to 6089000
 # painting_ids = [5943686, 5977558, 5960084, 5957888]
-LOWER = 5900000
+LOWER = 6088349
 # LOWER = 5900000
 # UPPER = 5900020
-UPPER = 6400000
+UPPER = 6088349
 painting_ids = xrange(LOWER, UPPER + 1)
 
 # CSV file to have the data
@@ -53,7 +53,7 @@ for cx, curr_id in enumerate(painting_ids):
         print "    Estimated h/m/s remaining: %d:%02d:%02d" % (h_remain, m_remain, s_remain)
         PREV_TIME = CURR_TIME
         num_ids_remaining -= 1
-    pdb.set_trace()
+    # pdb.set_trace()
     try:
         curr_url = "{}{}".format(BASE_URL, curr_id)
         response = urllib2.urlopen(curr_url)
@@ -95,7 +95,7 @@ for cx, curr_id in enumerate(painting_ids):
             "Lot details", "Painting details"]
         data = [artist, artist_dob, title, lot_number, auction_data, prices, lot_details, painting_details]
         formatted_data = []
-        pdb.set_trace()
+        # pdb.set_trace()
         for item in data:
             if not item:
                 formatted_data.append("")
