@@ -6,6 +6,7 @@
 # while you are already logged in it won't work.
 # If have problems, right-click VPN then hit "clear saved login info" or 
 # whatever it says.
+# + Auto refresh for Chrome on both Blouin, Blackboard so don't get logged out
 #
 ######################################################################
 
@@ -15,19 +16,17 @@ import pdb
 
 EXIT_PROGRAM = False
 
-BASE_URL = "http://artsalesindex.artinfo.com.ezproxy.princeton.edu/asi/lots/"
+BASE_URL = "http://artsalesindex.artinfo.com.ezproxy.princeton.edu/asi/lots/" # in future version, might be able to leave out the ezproxy.princeton.edu
 
 # just for Picasso for now
-# ids 5941080 to 6089000
-# painting_ids = [5943686, 5977558, 5960084, 5957888]
-LOWER = 5940000
-# LOWER = 5900000
-# UPPER = 5900020
-UPPER = 6100000
+LOWER = 6046096
+UPPER = 6300000
 painting_ids = xrange(LOWER, UPPER + 1)
 
 # CSV file to have the data
 fd = open("./blouin_data_{}_to_{}.csv".format(LOWER, UPPER), 'wb')
+# CSV file to have the good fileids
+good_fileids = open("./blouin_goodids_{}_to_{}.csv".format(LOWER, UPPER), 'wb')
 # CSV file to have the bad fileids
 bad_fileids = open("./blouin_badids_{}_to_{}.csv".format(LOWER, UPPER), 'wb')
 
@@ -35,7 +34,7 @@ bad_fileids = open("./blouin_badids_{}_to_{}.csv".format(LOWER, UPPER), 'wb')
 
 num_ids_remaining = UPPER - 1 - LOWER
 num_ids_printed = 1
-num_ids_invalid = 1
+num_ids_invalid = 0 # previously started at 1
 num_picassos = 0
 
 ## For tracking time remaining w/recursively updated average
@@ -48,7 +47,7 @@ for cx, curr_id in enumerate(painting_ids):
     if num_ids_remaining >= 0:
         # Information: which painting you're on, how much time remaining (estimate).
         # Multiple average time so far by number of paintings left.
-        print "Painting {} (# {} so far), going from {} to {} ...".format(curr_id, curr_id - LOWER, LOWER, UPPER)
+        print "-----> Painting {} (# {} so far), going from {} to {} ...".format(curr_id, curr_id - LOWER, LOWER, UPPER)
         print "    Paintings remaining: {}".format(num_ids_remaining)
         print "    Printed, invalid so far: {}, {}".format(num_ids_printed, num_ids_invalid)
         CURR_TIME = time.time()
@@ -59,7 +58,11 @@ for cx, curr_id in enumerate(painting_ids):
         print "    Estimated h/m/s remaining: %d:%02d:%02d" % (h_remain, m_remain, s_remain)
         PREV_TIME = CURR_TIME
         num_ids_remaining -= 1
+
+    ######################
     # pdb.set_trace()
+    ######################
+
     try:
         curr_url = "{}{}".format(BASE_URL, curr_id)
         response = urllib2.urlopen(curr_url)
@@ -110,8 +113,12 @@ for cx, curr_id in enumerate(painting_ids):
         data_names = ["Artist", "Artist DOB", "Title", "Lot #", "Auction data", "Prices",
             "Lot details", "Painting details"]
         data = [artist, artist_dob, title, lot_number, auction_data, prices, lot_details, painting_details]
-        formatted_data = []
+        formatted_data = [str(curr_id)]
+
+        ####################
         # pdb.set_trace()
+        ####################
+
         for item in data:
             if not item:
                 formatted_data.append("")
@@ -156,8 +163,10 @@ for cx, curr_id in enumerate(painting_ids):
         fd.write(csv_line + "\n")
         print "  Painting {} printed: {} by {}".format(num_ids_printed,
             formatted_data[2], formatted_data[0])
+        good_fileids.write("{}\n".format(curr_id))
         if cx % 1 == 0:
             fd.flush()
+            good_fileids.flush()
             print "  FLUSH OUTPUT"
         num_ids_printed += 1
 
@@ -169,10 +178,12 @@ for cx, curr_id in enumerate(painting_ids):
 
         print " Painting {} had invalid data, writing to file".format(curr_id)
         bad_fileids.write("{}\n".format(curr_id))
+        bad_fileids.flush()
         print " # paintings invalid so far: {}".format(num_ids_invalid)
         num_ids_invalid += 1
 
 fd.close()
+good_fileids.close()
 bad_fileids.close()
 print "Finished job."
 print "----- SUMMARY -----"

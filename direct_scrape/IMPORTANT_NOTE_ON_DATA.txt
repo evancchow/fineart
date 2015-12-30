@@ -1,0 +1,16 @@
+Due to bugs I noticed that toward the end of my scraping programs, perhaps due to my laptop, the connectivity gets lost. This causes data at the end to get lost.
+
+Hence, as per my fix, if you have a bunch of files like
+
+blouin_1_to_100.csv
+blouin_36_to_120.csv
+blouin_75_to_121.csv
+...
+
+This means that in the first file, for example, my program lost connectivity after painting 36.
+
+Paintings 1-36 will be in the first file, 36-75 will be in the second file, and so forth. Painting 36, for instance, will be both at the end of 1_to_100 and the beginning of 36_to_120.
+
+
+
+Also: note that the first real batch of data I have (5940000 to 6100000, which had missing data starting from 6046096 onward) does not have the IDs next to the paintings.
