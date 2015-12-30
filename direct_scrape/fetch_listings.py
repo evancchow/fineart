@@ -23,7 +23,7 @@ BASE_URL = "http://artsalesindex.artinfo.com.ezproxy.princeton.edu/asi/lots/"
 LOWER = 5940000
 # LOWER = 5900000
 # UPPER = 5900020
-UPPER = 6088351
+UPPER = 6100000
 painting_ids = xrange(LOWER, UPPER + 1)
 
 # CSV file to have the data
