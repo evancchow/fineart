@@ -11,16 +11,26 @@
 ######################################################################
 
 from bs4 import BeautifulSoup
-import urllib2, re, time, unicodedata, sys
+import urllib2, re, time, unicodedata, sys, linecache
 import pdb
+
+def PrintException():
+    exc_type, exc_obj, tb = sys.exc_info()
+    f = tb.tb_frame
+    lineno = tb.tb_lineno
+    filename = f.f_code.co_filename
+    linecache.checkcache(filename)
+    line = linecache.getline(filename, lineno, f.f_globals)
+    print 'EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj)
+
 
 EXIT_PROGRAM = False
 
 BASE_URL = "http://artsalesindex.artinfo.com.ezproxy.princeton.edu/asi/lots/" # in future version, might be able to leave out the ezproxy.princeton.edu
 
 # just for Picasso for now
-LOWER = 6046096
-UPPER = 6300000
+LOWER = 5800000
+UPPER = 5950000
 painting_ids = xrange(LOWER, UPPER + 1)
 
 # CSV file to have the data
@@ -34,7 +44,7 @@ bad_fileids = open("./blouin_badids_{}_to_{}.csv".format(LOWER, UPPER), 'wb')
 
 num_ids_remaining = UPPER - 1 - LOWER
 num_ids_printed = 1
-num_ids_invalid = 0 # previously started at 1
+num_ids_invalid = 0 # previously started at 1 so may have off-by-one errors in previous versions
 num_picassos = 0
 
 ## For tracking time remaining w/recursively updated average
@@ -172,6 +182,9 @@ for cx, curr_id in enumerate(painting_ids):
 
     #### if doesn't work just continue, collecting data is more important.
     except:
+        PrintException()
+        # "Nonetype has no attribute" -> okay, just means redirected to landing page
+
         if EXIT_PROGRAM == True:
             print "PROGRAM STOPPED BECAUSE LOGGED OUT OF PRINCETON VPN"
             import code; code.interact(local=locals())

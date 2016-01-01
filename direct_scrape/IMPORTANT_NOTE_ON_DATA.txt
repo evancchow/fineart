@@ -14,3 +14,15 @@ Paintings 1-36 will be in the first file, 36-75 will be in the second file, and 
 
 
 Also: note that the first real batch of data I have (5940000 to 6100000, which had missing data starting from 6046096 onward) does not have the IDs next to the paintings.
+
+
+
+In badids: main thing is to look for long consecutive runs of painting ids. if those ids are actually paintings (i.e. don't redirect to landing page), that suggests that your computer timed out, internet wise.
+
+May be some missing numbers in goodids 6046096 to 6300000, around line 248 or so. edit nul chars after done
+
+This might also be because you're getting kicked off the system.
+
+Also I just stopped after 6100000 or so since it looks like there are no more after that.
+
+IMPORTANT NOTE: does look like there's more in the 6100000s! If you have time, continue there.

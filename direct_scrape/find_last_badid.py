@@ -2,7 +2,10 @@
 
 import itertools
 
-badids_filename = "blouin_badids_5940000_to_6100000.csv"
+LOWER = 6102186
+UPPER = 6500005
+
+badids_filename = "blouin_badids_{}_to_{}.csv".format(LOWER, UPPER)
 bad_ids = [int(line) for line in reversed(open(badids_filename).readlines())]
 
 # cycle backward
